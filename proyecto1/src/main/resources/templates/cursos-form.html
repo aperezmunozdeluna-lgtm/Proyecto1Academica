@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Curso</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 30px;
+    }
+
+    h1 {
+        color: #2c3e50;
+    }
+
+    form {
+        max-width: 500px;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 12px;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        box-sizing: border-box;
+    }
+
+    button {
+        margin-top: 20px;
+        padding: 10px 15px;
+        border: none;
+        background-color: #3498db;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+
+    a {
+        text-decoration: none;
+        color: #3498db;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<h1>Curso</h1>
+
+<form th:action="${curso.id} == null ? @{/cursos/save} : @{/cursos/update/{id}(id=${curso.id})}"
+      th:object="${curso}" method="post">
+
+    <input type="hidden" th:field="*{id}" />
+
+    <label>Nombre:</label>
+    <input type="text" th:field="*{nombre}" />
+
+    <label>Categoria:</label>
+    <input type="text" th:field="*{categoria}" />
+
+    <label>Nivel:</label>
+    <input type="text" th:field="*{nivel}" />
+
+    <label>Fecha inicio:</label>
+    <input type="text" th:field="*{fechaInicio}" />
+
+    <label>Fecha fin:</label>
+    <input type="text" th:field="*{fechaFin}" />
+
+    <label>Plazas:</label>
+    <input type="number" th:field="*{plazas}" />
+
+    <button type="submit">Guardar</button>
+</form>
+
+<br>
+<a href="/cursos/list">Volver</a>
+
+</body>
+</html>

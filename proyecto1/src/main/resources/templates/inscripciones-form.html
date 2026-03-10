@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Nueva inscripción</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 30px;
+    }
+
+    h1 {
+        color: #2c3e50;
+    }
+
+    form {
+        max-width: 500px;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 12px;
+    }
+
+    select, input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        box-sizing: border-box;
+    }
+
+    button {
+        margin-top: 20px;
+        padding: 10px 15px;
+        border: none;
+        background-color: #3498db;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+
+    a {
+        text-decoration: none;
+        color: #3498db;
+        font-weight: bold;
+    }
+
+</style>
+</head>
+<body>
+
+<h1>Nueva inscripción</h1>
+
+<form th:action="@{/inscripciones/save}" method="post">
+
+    <label>Alumno:</label>
+    <select name="alumnoId">
+        <option th:each="a : ${alumnos}"
+                th:value="${a.id}"
+                th:text="${a.nombre + ' ' + a.apellidos}">
+        </option>
+    </select>
+
+    <label>Curso:</label>
+    <select name="cursoId">
+        <option th:each="c : ${cursos}"
+                th:value="${c.id}"
+                th:text="${c.nombre}">
+        </option>
+    </select>
+
+    <label>Observaciones:</label>
+    <input type="text" name="observaciones" />
+
+    <button type="submit">Inscribir</button>
+</form>
+
+<br>
+<a href="/inscripciones/list">Volver</a>
+
+</body>
+</html>

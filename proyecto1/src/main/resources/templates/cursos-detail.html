@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Detalle curso</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 30px;
+    }
+
+    h1 {
+        color: #2c3e50;
+    }
+
+    p {
+        margin: 8px 0;
+    }
+
+    a {
+        text-decoration: none;
+        color: #3498db;
+        font-weight: bold;
+    }
+ 
+</style>
+</head>
+<body>
+
+<h1>Detalle del curso</h1>
+
+<p><b>ID:</b> <span th:text="${curso.id}"></span></p>
+<p><b>Nombre:</b> <span th:text="${curso.nombre}"></span></p>
+<p><b>Categoría:</b> <span th:text="${curso.categoria}"></span></p>
+<p><b>Nivel:</b> <span th:text="${curso.nivel}"></span></p>
+<p><b>Fecha inicio:</b> <span th:text="${curso.fechaInicio}"></span></p>
+<p><b>Fecha fin:</b> <span th:text="${curso.fechaFin}"></span></p>
+<p><b>Plazas:</b> <span th:text="${curso.plazas}"></span></p>
+<p><b>Activo:</b> <span th:text="${curso.activo ? 'Sí' : 'No'}"></span></p>
+
+<a href="/cursos/list">Volver</a>
+
+</body>
+</html>

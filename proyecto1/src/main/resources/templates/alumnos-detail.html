@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Detalle alumno</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 30px;
+    }
+
+    h1, h2 {
+        color: #2c3e50;
+    }
+
+    p {
+        margin: 8px 0;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    a {
+        text-decoration: none;
+        color: #3498db;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<h1>Detalle del alumno</h1>
+
+<p><b>ID:</b> <span th:text="${alumno.id}"></span></p>
+<p><b>Nombre:</b> <span th:text="${alumno.nombre}"></span></p>
+<p><b>Apellidos:</b> <span th:text="${alumno.apellidos}"></span></p>
+<p><b>Email:</b> <span th:text="${alumno.email}"></span></p>
+<p><b>Telefono:</b> <span th:text="${alumno.telefono}"></span></p>
+<p><b>Fecha alta:</b> <span th:text="${alumno.fechaAlta}"></span></p>
+<p><b>Activo:</b> <span th:text="${alumno.activo ? 'Sí' : 'No'}"></span></p>
+
+<h2>Inscripciones ACTIVAS</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Curso</th>
+            <th>Fecha inscripción</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="i : ${inscripciones}">
+            <td th:text="${i.curso.nombre}"></td>
+            <td th:text="${i.fechaInscripcion}"></td>
+            <td th:text="${i.estado}"></td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+<a href="/alumnos/list">Volver</a>
+
+</body>
+</html>

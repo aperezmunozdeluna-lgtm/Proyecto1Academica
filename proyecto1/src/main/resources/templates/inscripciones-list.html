@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Listado de inscripciones</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 30px;
+    }
+
+    h1 {
+        color: #2c3e50;
+    }
+
+    a {
+        text-decoration: none;
+        margin-right: 10px;
+        color: #3498db;
+        font-weight: bold;
+    }
+
+    a:hover {
+        color: #21618c;
+    }
+
+    .boton {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 8px 12px;
+        background-color: #3498db;
+        color: white;
+        border-radius: 5px;
+    }
+
+    .boton:hover {
+        background-color: #2980b9;
+        color: white;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+</head>
+<body>
+
+<h1>Listado de inscripciones</h1>
+
+<a class="boton" href="/inscripciones/new">Nueva inscripción</a>
+<a class="boton" href="/">Inicio</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Alumno</th>
+            <th>Curso</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Observaciones</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="i : ${inscripciones}">
+            <td th:text="${i.id}"></td>
+            <td th:text="${i.alumnoNombreCompleto}"></td>
+            <td th:text="${i.cursoNombre}"></td>
+            <td th:text="${i.fechaInscripcion}"></td>
+            <td th:text="${i.estado}"></td>
+            <td th:text="${i.observaciones}"></td>
+            <td>
+                <a th:if="${i.estado == 'ACTIVA'}"
+                   th:href="@{/inscripciones/cancelar/{id}(id=${i.id})}">Cancelar</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

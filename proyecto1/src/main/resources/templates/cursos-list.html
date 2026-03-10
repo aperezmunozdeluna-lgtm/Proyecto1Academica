@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Listado de cursos</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 30px;
+    }
+
+    h1 {
+        color: #2c3e50;
+    }
+
+    a {
+        text-decoration: none;
+        margin-right: 10px;
+        color: #3498db;
+        font-weight: bold;
+    }
+
+    a:hover {
+        color: #21618c;
+    }
+
+    .boton {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 8px 12px;
+        background-color: #3498db;
+        color: white;
+        border-radius: 5px;
+    }
+
+    .boton:hover {
+        background-color: #2980b9;
+        color: white;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+</head>
+<body>
+
+<h1>Listado de cursos</h1>
+
+<a class="boton" href="/cursos/new">Nuevo curso</a>
+<a class="boton" href="/">Inicio</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Categoria</th>
+            <th>Nivel</th>
+            <th>Fecha inicio</th>
+            <th>Fecha fin</th>
+            <th>Plazas</th>
+            <th>Activo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="c : ${cursos}">
+            <td th:text="${c.id}"></td>
+            <td th:text="${c.nombre}"></td>
+            <td th:text="${c.categoria}"></td>
+            <td th:text="${c.nivel}"></td>
+            <td th:text="${c.fechaInicio}"></td>
+            <td th:text="${c.fechaFin}"></td>
+            <td th:text="${c.plazas}"></td>
+            <td th:text="${c.activo ? 'Sí' : 'No'}"></td>
+            <td>
+                <a th:href="@{/cursos/detail/{id}(id=${c.id})}">Detalle</a>
+                <a th:href="@{/cursos/edit/{id}(id=${c.id})}">Editar</a>
+                <a th:if="${c.activo}" th:href="@{/cursos/desactivar/{id}(id=${c.id})}">Desactivar</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

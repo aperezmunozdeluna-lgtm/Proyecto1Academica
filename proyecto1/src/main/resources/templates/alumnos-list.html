@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Listado de alumnos</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 30px;
+    }
+
+    h1 {
+        color: #2c3e50;
+    }
+
+    a {
+        text-decoration: none;
+        margin-right: 10px;
+        color: #3498db;
+        font-weight: bold;
+    }
+
+    a:hover {
+        color: #21618c;
+    }
+
+    .boton {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 8px 12px;
+        background-color: #3498db;
+        color: white;
+        border-radius: 5px;
+    }
+
+    .boton:hover {
+        background-color: #2980b9;
+        color: white;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+</head>
+<body>
+
+<h1>Listado de alumnos</h1>
+
+<a class="boton" href="/alumnos/new">Nuevo alumno</a>
+<a class="boton" href="/">Inicio</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Email</th>
+            <th>Activo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="a : ${alumnos}">
+            <td th:text="${a.id}"></td>
+            <td th:text="${a.nombre}"></td>
+            <td th:text="${a.apellidos}"></td>
+            <td th:text="${a.email}"></td>
+            <td th:text="${a.activo ? 'Sí' : 'No'}"></td>
+            <td>
+                <a th:href="@{/alumnos/detail/{id}(id=${a.id})}">Detalle</a>
+                <a th:href="@{/alumnos/edit/{id}(id=${a.id})}">Editar</a>
+                <a th:if="${a.activo}" th:href="@{/alumnos/desactivar/{id}(id=${a.id})}">Desactivar</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
