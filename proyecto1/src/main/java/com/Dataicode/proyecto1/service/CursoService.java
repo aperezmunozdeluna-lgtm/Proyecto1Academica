@@ -34,9 +34,10 @@ public class CursoService {
     }
 
     public Curso buscarPorId(Long id) {
-        logger.info("Buscando curso por id: {}", id);
-        logger.warn("Curso no encontrado id={}", id);
-        return cursoRepository.findById(id).orElse(null);
+        logger.info("Buscando curso por id={}", id);
+
+        return cursoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Curso no encontrado con id: " + id));
     }
  
     public Curso crear(Curso curso) {
@@ -67,18 +68,15 @@ public class CursoService {
     }
 
     public void desactivar(Long id) {
-        logger.info("Desactivando curso id: {}", id);
+        logger.info("Desactivando curso id={}", id);
 
-        Curso cursoBD = cursoRepository.findById(id).orElse(null);
+        Curso curso = cursoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Curso no encontrado con id: " + id));
 
-        if (cursoBD != null) {
-            cursoBD.setActivo(false);
-            cursoRepository.save(cursoBD);
-            logger.info("Curso desactivado correctamente id: {}", id);
-        } else {
-            logger.warn("Intento de desactivar curso que no existe. id: {}", id);
-            logger.info("Curso desactivado correctamente id={}", id);
-        }
+        curso.setActivo(false);
+        cursoRepository.save(curso);
+
+        logger.info("Curso desactivado correctamente id={}", id);
     }
     public long plazasOcupadas(Long cursoId) {
     	logger.info("Calculando plazas ocupadas del curso id={}", cursoId);
@@ -104,6 +102,8 @@ public class CursoService {
         c.setActivo(dto.isActivo());
 
         cursoRepository.save(c);
+
+        logger.info("Curso actualizado correctamente id={}", id);
     }
     public void crearDesdeDTO(CursoCreateDTO dto) {
 

@@ -77,6 +77,26 @@
 			<artifactId>spring-boot-starter-webmvc-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+<!--
+LOMBOK
+
+Lombok es una librería de Java que permite reducir código repetitivo en las clases.
+Funciona mediante anotaciones que generan automáticamente métodos comunes durante la compilación,
+como getters, setters, constructores, toString, equals y hashCode.
+
+Se usa mucho en proyectos Spring Boot porque permite que las clases (entidades, DTOs, etc.)
+sean más limpias y fáciles de mantener, evitando tener que escribir manualmente todos esos métodos.
+
+No se especifica la versión de Lombok porque el proyecto usa el parent
+spring-boot-starter-parent, que gestiona automáticamente las versiones de muchas
+dependencias mediante dependency management. De esta forma Spring Boot utiliza
+una versión compatible de Lombok y no es necesario indicarla manualmente.
+-->
+		<dependency>
+    		<groupId>org.projectlombok</groupId>
+    		<artifactId>lombok</artifactId>
+    		<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

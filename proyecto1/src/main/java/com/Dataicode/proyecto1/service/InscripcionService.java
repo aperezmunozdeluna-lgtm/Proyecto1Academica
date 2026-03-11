@@ -12,6 +12,8 @@ import com.Dataicode.proyecto1.dto.InscripcionListDTO;
 import com.Dataicode.proyecto1.entity.Alumno;
 import com.Dataicode.proyecto1.entity.Curso;
 import com.Dataicode.proyecto1.entity.Inscripcion;
+import com.Dataicode.proyecto1.exception.BusinessException;
+import com.Dataicode.proyecto1.exception.NotFoundException;
 import com.Dataicode.proyecto1.repository.AlumnoRepository;
 import com.Dataicode.proyecto1.repository.CursoRepository;
 import com.Dataicode.proyecto1.repository.InscripcionRepository;
@@ -68,57 +70,55 @@ public class InscripcionService {
         logger.warn("Inscripción duplicada. alumnoId={} cursoId={}", alumnoId, cursoId);
         logger.warn("Curso sin plazas disponibles. cursoId={}", cursoId);
         logger.info("Inscripción creada correctamente. alumnoId={} cursoId={}", alumnoId, cursoId);
-        
-        Alumno alumno = alumnoRepository.findById(alumnoId).orElse(null);
-        Curso curso = cursoRepository.findById(cursoId).orElse(null);
+ 
+            Alumno alumno = alumnoRepository.findById(alumnoId)
+                    .orElseThrow(() -> new NotFoundException("Alumno no encontrado con id: " + alumnoId));
 
-        if (alumno == null || curso == null) {
-            logger.warn("No se puede inscribir: alumno o curso no existe. alumnoId={} cursoId={}", alumnoId, cursoId);
-            return;
+            Curso curso = cursoRepository.findById(cursoId)
+                    .orElseThrow(() -> new NotFoundException("Curso no encontrado con id: " + cursoId));
+
+            if (!alumno.isActivo()) {
+                logger.warn("Alumno inactivo. alumnoId={}", alumnoId);
+                throw new BusinessException("El alumno está inactivo");
+            }
+
+            if (!curso.isActivo()) {
+                logger.warn("Curso inactivo. cursoId={}", cursoId);
+                throw new BusinessException("El curso está inactivo");
+            }
+
+            boolean duplicada = inscripcionRepository.existsByAlumnoIdAndCursoIdAndEstado(alumnoId, cursoId, "ACTIVA");
+            if (duplicada) {
+                logger.warn("Inscripción duplicada. alumnoId={} cursoId={}", alumnoId, cursoId);
+                throw new BusinessException("El alumno ya está inscrito en este curso");
+            }
+
+            long plazasOcupadas = inscripcionRepository.countByCursoIdAndEstado(cursoId, "ACTIVA");
+            if (plazasOcupadas >= curso.getPlazas()) {
+                logger.warn("Curso sin plazas disponibles. cursoId={}", cursoId);
+                throw new BusinessException("No quedan plazas disponibles en el curso");
+            }
+
+            Inscripcion i = new Inscripcion();
+            i.setAlumno(alumno);
+            i.setCurso(curso);
+            i.setFechaInscripcion(LocalDateTime.now());
+            i.setEstado("ACTIVA");
+            i.setObservaciones(observaciones);
+
+            inscripcionRepository.save(i);
+
+            logger.info("Inscripción creada correctamente. alumnoId={} cursoId={}", alumnoId, cursoId);
         }
-
-      
-        if (!alumno.isActivo() || !curso.isActivo()) {
-            logger.warn("No se puede inscribir: alumno o curso inactivo. alumnoId={} cursoId={}", alumnoId, cursoId);
-            return;
-        }
-
-
-        boolean duplicada = inscripcionRepository.existsByAlumnoIdAndCursoIdAndEstado(alumnoId, cursoId, "ACTIVA");
-        if (duplicada) {
-            logger.warn("Inscripción duplicada (ya existe ACTIVA). alumnoId={} cursoId={}", alumnoId, cursoId);
-            return;
-        }
-
-       
-        long restantes = plazasRestantes(cursoId);
-        if (restantes <= 0) {
-            logger.warn("Curso sin plazas. cursoId={}", cursoId);
-            return;
-        }
-
-        Inscripcion i = new Inscripcion();
-        i.setAlumno(alumno);
-        i.setCurso(curso);
-        i.setFechaInscripcion(LocalDateTime.now());
-        i.setEstado("ACTIVA");
-        i.setObservaciones(observaciones);
-
-        inscripcionRepository.save(i);
-        logger.info("Inscripción creada correctamente. alumnoId={} cursoId={}", alumnoId, cursoId);
-    }
 
     public void cancelar(Long inscripcionId) {
         logger.info("Cancelando inscripción id={}", inscripcionId);
 
-        Inscripcion ins = inscripcionRepository.findById(inscripcionId).orElse(null);
-        if (ins == null) {
-            logger.warn("No existe la inscripción id={}", inscripcionId);
-            return;
-        }
+        Inscripcion inscripcion = inscripcionRepository.findById(inscripcionId)
+                .orElseThrow(() -> new NotFoundException("Inscripción no encontrada con id: " + inscripcionId));
 
-        ins.setEstado("CANCELADA");
-        inscripcionRepository.save(ins);
+        inscripcion.setEstado("CANCELADA");
+        inscripcionRepository.save(inscripcion);
 
         logger.info("Inscripción cancelada correctamente id={}", inscripcionId);
     }

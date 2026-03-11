@@ -48,19 +48,15 @@ public class AlumnoService {
         return alumnoRepository.save(alumno);
     }
     public void desactivar(Long id) {
-        logger.info("Desactivando alumno con id: {}", id);
-        logger.warn("Intento de desactivar alumno no existente id={}", id);
-        logger.info("Alumno desactivado correctamente id={}", id);
-        Alumno alumno = alumnoRepository.findById(id).orElse(null);
+        logger.info("Desactivando alumno id={}", id);
 
-        if (alumno != null) {
-            alumno.setActivo(false);
-            alumnoRepository.save(alumno);
-            logger.info("Alumno desactivado correctamente id: {}", id);
-        } else {
-            logger.warn("Intento de desactivar alumno que no existe. id: {}", id);
-        }
-        
+        Alumno alumno = alumnoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Alumno no encontrado con id: " + id));
+
+        alumno.setActivo(false);
+        alumnoRepository.save(alumno);
+
+        logger.info("Alumno desactivado correctamente id={}", id);
     }
     public Alumno buscarPorId(Long id) {
         logger.info("Buscando alumno por id: {}", id);
@@ -113,20 +109,20 @@ public class AlumnoService {
 
     public void actualizarDesdeDTO(Long id, AlumnoUpdateDTO dto) {
 
-    logger.info("Actualizando alumno id={}", id);
-    logger.warn("Intento de actualizar alumno no existente id={}", id);
-    
-    Alumno a = alumnoRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Alumno no encontrado con id: " + id));
+        logger.info("Actualizando alumno id={}", id);
 
-    a.setNombre(dto.getNombre());
-    a.setApellidos(dto.getApellidos());
-    a.setEmail(dto.getEmail());
-    a.setTelefono(dto.getTelefono());
-    a.setActivo(dto.isActivo());
+        Alumno a = alumnoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Alumno no encontrado con id: " + id));
 
-   
-    alumnoRepository.save(a);
+        a.setNombre(dto.getNombre());
+        a.setApellidos(dto.getApellidos());
+        a.setEmail(dto.getEmail());
+        a.setTelefono(dto.getTelefono());
+        a.setActivo(dto.isActivo());
+
+        alumnoRepository.save(a);
+
+        logger.info("Alumno actualizado correctamente id={}", id);
     }
     public List<AlumnoListDTO> listarTodosDTO() {
 
