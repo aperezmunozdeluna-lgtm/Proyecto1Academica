@@ -18,7 +18,14 @@ import com.Dataicode.proyecto1.repository.AlumnoRepository;
 import com.Dataicode.proyecto1.repository.CursoRepository;
 import com.Dataicode.proyecto1.repository.InscripcionRepository;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Service
+
+
 public class InscripcionService {
 
     private static final Logger logger = LoggerFactory.getLogger(InscripcionService.class);

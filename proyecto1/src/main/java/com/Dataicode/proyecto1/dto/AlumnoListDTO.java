@@ -9,5 +9,6 @@ public class AlumnoListDTO {
     private String nombre;
     private String apellidos;
     private String email;
+    private boolean activo;
 
 }

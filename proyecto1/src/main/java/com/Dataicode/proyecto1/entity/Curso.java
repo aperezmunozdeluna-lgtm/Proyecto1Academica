@@ -1,4 +1,7 @@
 package com.Dataicode.proyecto1.entity;
+
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +19,21 @@ public class Curso {
     @Column(nullable = false)
     private String nombre;
 
-    private String descripcion;
+    @Column(nullable = false)
+    private String categoria;
 
-    private int duracionHoras;
+    @Column(nullable = false)
+    private String nivel;
+
+    @Column(nullable = false)
+    private LocalDate fechaInicio;
+
+    @Column(nullable = false)
+    private LocalDate fechaFin;
+
+    @Column(nullable = false)
+    private int plazas;
+
+    @Column(nullable = false)
+    private boolean activo;
 }

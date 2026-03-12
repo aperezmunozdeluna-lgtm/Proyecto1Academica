@@ -1,7 +1,9 @@
 package com.Dataicode.proyecto1.entity;
+
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -23,5 +25,10 @@ public class Inscripcion {
     private Curso curso;
 
     @Column(nullable = false)
-    private LocalDate fechaInscripcion;
+    private LocalDateTime fechaInscripcion;
+
+    @Column(nullable = false)
+    private String estado;
+
+    private String observaciones;
 }

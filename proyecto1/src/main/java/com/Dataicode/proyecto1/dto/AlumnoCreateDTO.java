@@ -9,5 +9,6 @@ public class AlumnoCreateDTO {
     private String apellidos;
     private String email;
     private String telefono;
+    private boolean activo;
 
 }
